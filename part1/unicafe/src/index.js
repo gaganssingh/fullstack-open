@@ -5,11 +5,27 @@ const Button = ({ handleClick, text }) => (
    <button onClick={handleClick}>{text}</button>
 );
 
-const Display = ({ text, feedback }) => (
-   <p>
-      {text}: {feedback}
-   </p>
-);
+const Display = (props) => {
+   if (props.text === "average") {
+      return (
+         <p>
+            {props.text}: {props.average}
+         </p>
+      );
+   }
+   if (props.text === "positive") {
+      return (
+         <p>
+            {props.text}: {props.positive}%
+         </p>
+      );
+   }
+   return (
+      <p>
+         {props.text}: {props.feedback}
+      </p>
+   );
+};
 
 const App = () => {
    // save clicks of each button to own state
@@ -37,6 +53,15 @@ const App = () => {
          <Display text="good" feedback={good} />
          <Display text="neutral" feedback={neutral} />
          <Display text="bad" feedback={bad} />
+         <Display text="all" feedback={good + neutral + bad} />
+         <Display
+            text="average"
+            average={(good - bad) / (good + neutral + bad)}
+         />
+         <Display
+            text="positive"
+            positive={(good / (good + neutral + bad)) * 100}
+         />
       </div>
    );
 };
