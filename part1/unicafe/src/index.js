@@ -1,31 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-
-const Button = ({ handleClick, text }) => (
-   <button onClick={handleClick}>{text}</button>
-);
-
-const Statistics = (props) => {
-   if (props.text === "average") {
-      return (
-         <p>
-            {props.text}: {props.average}
-         </p>
-      );
-   }
-   if (props.text === "positive") {
-      return (
-         <p>
-            {props.text}: {props.positive}%
-         </p>
-      );
-   }
-   return (
-      <p>
-         {props.text}: {props.feedback}
-      </p>
-   );
-};
+import Button from "./Button";
+import Statistics from "./Statistics";
 
 const App = () => {
    // save clicks of each button to own state
@@ -45,7 +21,14 @@ const App = () => {
 
    const renderStats = (
       <>
-         <Statistics text="good" feedback={good} />
+         <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            average={(good - bad) / (good + neutral + bad)}
+            positive={(good / (good + neutral + bad)) * 100}
+         />
+         {/* <Statistics text="good" feedback={good} />
          <Statistics text="neutral" feedback={neutral} />
          <Statistics text="bad" feedback={bad} />
          <Statistics text="all" feedback={good + neutral + bad} />
@@ -56,7 +39,7 @@ const App = () => {
          <Statistics
             text="positive"
             positive={(good / (good + neutral + bad)) * 100}
-         />
+         /> */}
       </>
    );
 
