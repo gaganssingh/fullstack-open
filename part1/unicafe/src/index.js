@@ -43,13 +43,8 @@ const App = () => {
       setBad(bad + 1);
    };
 
-   return (
-      <div>
-         <h1>give feedback</h1>
-         <Button handleClick={handleGoodFeedback} text="good" />
-         <Button handleClick={handleNeutralFeedback} text="neutral" />
-         <Button handleClick={handleBadFeedback} text="bad" />
-         <h2>statistics</h2>
+   const renderStats = (
+      <>
          <Statistics text="good" feedback={good} />
          <Statistics text="neutral" feedback={neutral} />
          <Statistics text="bad" feedback={bad} />
@@ -62,6 +57,17 @@ const App = () => {
             text="positive"
             positive={(good / (good + neutral + bad)) * 100}
          />
+      </>
+   );
+
+   return (
+      <div>
+         <h1>give feedback</h1>
+         <Button handleClick={handleGoodFeedback} text="good" />
+         <Button handleClick={handleNeutralFeedback} text="neutral" />
+         <Button handleClick={handleBadFeedback} text="bad" />
+         <h2>statistics</h2>
+         {good !== 0 && renderStats}
       </div>
    );
 };
