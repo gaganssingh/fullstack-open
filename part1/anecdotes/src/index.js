@@ -1,5 +1,22 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+const SectionHeading = (props) => <h1>{props.text}</h1>;
+
+const Button = (props) => (
+   <button onClick={props.handleClick}>{props.text}</button>
+);
+
+const MostVotedAnecdote = (props) => {
+   const { anecdotes, votes } = props;
+   const mostVotedIndex = votes.indexOf(Math.max(...votes));
+
+   return (
+      <div>
+         <p>{anecdotes[mostVotedIndex]}</p>
+         <p>has {votes[mostVotedIndex]} votes</p>
+      </div>
+   );
+};
 
 const App = (props) => {
    const [selected, setSelected] = useState(0);
@@ -21,10 +38,13 @@ const App = (props) => {
 
    return (
       <div>
+         <SectionHeading text="Anecdote of the day" />
          <p>{props.anecdotes[selected]}</p>
          <p>has {votes[selected]} votes</p>
-         <button onClick={voteAnecdote}>vote</button>
-         <button onClick={displayNextRandomAnecdote}>Next Anecdotes</button>
+         <Button handleClick={voteAnecdote} text="Vote" />
+         <Button handleClick={displayNextRandomAnecdote} text="Next Anecdote" />
+         <SectionHeading text="Anecdote with most votes" />
+         <MostVotedAnecdote anecdotes={props.anecdotes} votes={votes} />
       </div>
    );
 };
