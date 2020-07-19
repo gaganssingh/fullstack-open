@@ -32,7 +32,24 @@ const App = () => {
       personService.create(personObject).then((addedPerson) => {
          setPersons(persons.concat(addedPerson));
          setNewName("");
+         setNewNumber("");
       });
+   };
+
+   const deletePerson = (id) => {
+      const newPersonsList = persons.filter((person) => person.id !== id);
+
+      const confirmDeletion = window.confirm(
+         "Are you sure you want to delete this contact?"
+      );
+
+      if (confirmDeletion) {
+         personService
+            .deletePerson(id)
+            .then((response) => setPersons(newPersonsList));
+      } else {
+         return;
+      }
    };
 
    const handleNewName = (event) => {
@@ -65,7 +82,10 @@ const App = () => {
             newNumberValue={newNumber}
          />
          <Header text="Numbers" />
-         <Person renderedPersons={renderedPersons} />
+         <Person
+            renderedPersons={renderedPersons}
+            deletePerson={deletePerson}
+         />
       </div>
    );
 };
