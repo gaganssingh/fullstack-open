@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
+import personService from "./service/persons";
 import Header from "./components/Header";
 import Search from "./components/Search";
 import PersonForm from "./components/PersonForm";
@@ -13,9 +13,7 @@ const App = () => {
    const [filteredName, setFilteredName] = useState("");
 
    useEffect(() => {
-      axios
-         .get("http://localhost:3001/persons")
-         .then((response) => setPersons(response.data));
+      personService.getAll().then((allPersons) => setPersons(allPersons));
    }, []);
 
    const addPerson = (event) => {
@@ -26,12 +24,15 @@ const App = () => {
       }
 
       if (!newName || !newNumber) {
-         return "Please add a valid number";
+         return "Please add a name and a number";
       }
 
       const personObject = { name: newName, number: newNumber };
-      setPersons(persons.concat(personObject));
-      setNewName("");
+
+      personService.create(personObject).then((addedPerson) => {
+         setPersons(persons.concat(addedPerson));
+         setNewName("");
+      });
    };
 
    const handleNewName = (event) => {
