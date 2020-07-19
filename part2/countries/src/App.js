@@ -8,6 +8,7 @@ const App = () => {
    const [countries, setCountries] = useState([]);
    const [enteredCountry, setEnteredCountry] = useState("");
    const [results, setResults] = useState([]);
+   const [showDetails, setShowDetails] = useState(false);
 
    useEffect(() => {
       axios
@@ -29,13 +30,22 @@ const App = () => {
       setResults(filteredCountries);
    };
 
+   const handleShowDetails = () => {
+      setShowDetails(!showDetails);
+   };
+
    return (
       <div>
          <SearchCountry
             handleCountryInput={handleCountryInput}
             enteredCountry={enteredCountry}
          />
-         <CountryList results={results} />
+         <CountryList
+            results={results}
+            handleShowDetails={handleShowDetails}
+            showDetails={showDetails}
+            setShowDetails={setShowDetails}
+         />
       </div>
    );
 };
