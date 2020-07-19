@@ -16,24 +16,45 @@ const App = () => {
       personService.getAll().then((allPersons) => setPersons(allPersons));
    }, []);
 
-   const addPerson = (event) => {
+   const addPerson = (event, id) => {
       event.preventDefault();
-      if (persons.find((person) => person.name === newName)) {
-         alert(`${newName} is already added to the phonebook`);
+
+      if (!newName || !newNumber) {
+         alert("Please add a name and a number");
          return;
       }
 
-      if (!newName || !newNumber) {
-         return "Please add a name and a number";
+      let personObject;
+
+      if (persons.find((person) => person.name === newName)) {
+         const confirmUpdate = window.confirm(
+            `${newName} is already added to phone, replace the old number with a new one?`
+         );
+         if (confirmUpdate) {
+            const personToUpdate = persons.find(
+               (person) => person.name === newName
+            );
+            personObject = { ...personToUpdate, number: newNumber };
+
+            personService
+               .update(personObject.id, personObject)
+               .then((returnedPerson) =>
+                  setPersons(
+                     persons.map((person) =>
+                        person.id !== personObject.id ? person : returnedPerson
+                     )
+                  )
+               );
+         }
+      } else {
+         personObject = { name: newName, number: newNumber };
+
+         personService.create(personObject).then((addedPerson) => {
+            setPersons(persons.concat(addedPerson));
+            setNewName("");
+            setNewNumber("");
+         });
       }
-
-      const personObject = { name: newName, number: newNumber };
-
-      personService.create(personObject).then((addedPerson) => {
-         setPersons(persons.concat(addedPerson));
-         setNewName("");
-         setNewNumber("");
-      });
    };
 
    const deletePerson = (id) => {
