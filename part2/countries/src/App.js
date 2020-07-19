@@ -44,7 +44,6 @@ const App = () => {
             results={results}
             handleShowDetails={handleShowDetails}
             showDetails={showDetails}
-            setShowDetails={setShowDetails}
          />
       </div>
    );

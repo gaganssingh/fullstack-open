@@ -3,8 +3,7 @@ import React from "react";
 import CountryDetail from "./CountryDetail";
 
 const CountryList = (props) => {
-   const { results, handleShowDetails, showDetails, setShowDetails } = props;
-   console.log(results);
+   const { results, handleShowDetails, showDetails } = props;
    let renderedResults;
    if (results.length > 10) {
       renderedResults = <p>Too many matches, specify another filter</p>;
